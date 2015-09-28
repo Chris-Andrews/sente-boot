@@ -92,6 +92,8 @@
     (debugf "Login request: %s" params)
     {:status 200 :session (assoc session :uid user-id)}))
 
+(def root (str (System/getProperty "user.dir") "/target"))
+
 (defroutes my-routes
   (GET  "/"      req (landing-pg-handler req))
   ;;
@@ -99,6 +101,8 @@
   (POST "/chsk"  req (ring-ajax-post                req))
   (POST "/login" req (login! req))
   ;;
+  (route/files "/" (do (println root) {:root root}))
+  (route/resources "/")
   (route/not-found "<h1>Page not found</h1>"))
 
 (def my-ring-handler
